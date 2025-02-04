@@ -31,10 +31,14 @@ public class MainController {
   @Autowired
   private FileService fileService;
 
-  @RequestMapping(method=RequestMethod.POST, value="/test-domain", consumes="application/json")
+@RequestMapping(method=RequestMethod.POST, value="/test-domain", consumes="application/json")
   public ResponseEntity<String> testDomain(@RequestBody DomainTestRequest request) {
     log.info("Testing domain " + request.domainName);
     try {
+      // Use PreparedStatement or JdbcTemplate to avoid SQL injection
+      String sql = "SELECT * FROM domains WHERE name = ?";
+      jdbcTemplate.queryForObject(sql, new Object[]{request.domainName}, Domain.class);
+      
       String result = domainTestService.testDomain(request.domainName);
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch(InvalidDomainException e) {
@@ -44,6 +48,8 @@ public class MainController {
     } catch(Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
   }
 
   @RequestMapping(method=RequestMethod.POST, value="/test-website", consumes="application/json")
