@@ -27,7 +27,7 @@ jobs:
       run: |
         ${GITHUB_WORKSPACE}/sl --version
         ${GITHUB_WORKSPACE}/sl analyze --strict --wait \
-          --app Java_11 \
+          --app Java_11New \
           --tag branch=${{ github.head_ref }} \
           $(pwd)
       env:
