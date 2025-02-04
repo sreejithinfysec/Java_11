@@ -18,21 +18,30 @@ function handleError(error) {
 }
 
 function submitRequest() {
-  var domainName = document.getElementById('domain').value;
+  var domainName = document.getElementById('domain').value.trim();
   if (!domainName) {
-    alert("Please enter a domain name");
+    showAlert("Please enter a domain name");
     return;
   }
+  // Use a sanitization library like DOMPurify to sanitize the input
+  var sanitizedDomainName = DOMPurify.sanitize(domainName);
   $.ajax({
     url: '/test-domain',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
-      'domainName': sanitize(domainName)
+      'domainName': sanitizedDomainName
     }),
     success: updateOutput,
     error: handleError
   });
+}
+
+function showAlert(message) {
+  // Replace alert with a custom alert or modal dialog
+  alert(message);
+}
+
 }
 
 }
