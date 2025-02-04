@@ -18,21 +18,73 @@ function handleError(error) {
 }
 
 function submitRequest() {
-  var domainName = document.getElementById('domain').value
+  var domainName = document.getElementById('domain').value;
   if (!domainName) {
-    alert("Please enter a domain name")
-    return
+    alert("Please enter a domain name");
+    return;
   }
   $.ajax({
     url: '/test-domain',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
-      'domainName': domainName
+      'domainName': sanitize(domainName)
     }),
     success: updateOutput,
     error: handleError
-  })
+  });
+}
+
+    success: updateOutput,
+    error: handleError
+  });
+}
+
+function showAlert(message) {
+  // Replace alert with a custom alert or modal dialog
+  alert(message);
+}
+
+    success: updateOutput,
+    error: handleError
+  });
+}
+
+function showAlert(message) {
+  // Replace alert with a custom alert or modal dialog
+  alert(message);
+}
+
+}
+
+}
+
+}
+
+    success: updateOutput,
+    error: handleError
+  });
+}
+
+    success: updateOutput,
+    error: handleError
+  });
+}
+
+function showCustomAlert(message) {
+  // Implement custom alert logic here
+  // This could be a modal dialog, toast notification, or custom JavaScript alert
+  var modal = document.getElementById('customModal');
+  var modalMessage = document.getElementById('modalMessage');
+  modalMessage.innerText = message;
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  var modal = document.getElementById('customModal');
+  modal.style.display = 'none';
+}
+
 }
 
 var form = document.querySelectorAll('form')[0]
