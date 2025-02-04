@@ -20,18 +20,23 @@ function handleError(error) {
 function submitRequest() {
   var domainName = document.getElementById('domain').value;
   if (!domainName) {
-    // Use modal dialogs, toast notifications, or custom JavaScript alerts
-    // that offer enhanced user experience and design consistency.
-    showCustomAlert("Please enter a domain name");
+    alert("Please enter a domain name");
     return;
   }
+  // Sanitize the input before using it
+  domainName = sanitize(domainName);
   $.ajax({
     url: '/test-domain',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
-      'domainName': DOMPurify.sanitize(domainName) // Sanitize input to prevent XSS attacks
+      'domainName': domainName
     }),
+    success: updateOutput,
+    error: handleError
+  });
+}
+
     success: updateOutput,
     error: handleError
   });
