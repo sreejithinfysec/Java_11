@@ -42,6 +42,16 @@ function showAlert(message) {
   alert(message);
 }
 
+    success: updateOutput,
+    error: handleError
+  });
+}
+
+function showAlert(message) {
+  // Replace alert with a custom alert or modal dialog
+  alert(message);
+}
+
 }
 
 }
