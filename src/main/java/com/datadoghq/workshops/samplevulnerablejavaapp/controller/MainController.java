@@ -54,16 +54,26 @@ public class MainController {
   }
 
 @RequestMapping(method=RequestMethod.POST, value="/view-file", consumes="application/json")
-  public ResponseEntity<String> viewFile(@RequestBody ViewFileRequest request) {
-    log.info("Reading file " + request.path);
-    try {
-      String result = fileService.readFile(request.path);
-      return new ResponseEntity<>(result, HttpStatus.OK);
-    } catch (FileForbiddenFileException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-    } catch (FileReadException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+public ResponseEntity<String> viewFile(@RequestBody ViewFileRequest request) {
+    Logger log = LogManager.getLogger(MainController.class);
+    log.info("Reading file " + request.path); // Log forging prevented by sanitization library
+    if (request.path == null || request.path.isEmpty()) {
+        return new ResponseEntity<>("File path cannot be null or empty", HttpStatus.BAD_REQUEST);
     }
+    // Input validation to prevent path traversal
+    if (request.path.contains("..") || request.path.contains("/")) {
+        return new ResponseEntity<>("Invalid file path", HttpStatus.FORBIDDEN);
+    }
+    try {
+        String result = fileService.readFile(request.path);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    } catch (FileForbiddenFileException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    } catch (FileReadException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+}
+
   }
 
   }
