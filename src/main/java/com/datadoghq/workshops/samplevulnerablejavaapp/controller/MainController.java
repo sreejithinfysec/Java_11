@@ -53,7 +53,7 @@ public class MainController {
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
-  @RequestMapping(method=RequestMethod.POST, value="/view-file", consumes="application/json")
+@RequestMapping(method=RequestMethod.POST, value="/view-file", consumes="application/json")
   public ResponseEntity<String> viewFile(@RequestBody ViewFileRequest request) {
     log.info("Reading file " + request.path);
     try {
@@ -64,6 +64,8 @@ public class MainController {
     } catch (FileReadException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+  }
+
   }
 
 }
