@@ -18,11 +18,12 @@ function handleError(error) {
 }
 
 function submitRequest() {
-  var url = document.getElementById('url').value
+  var url = document.getElementById('url').value;
   if (!url) {
-    alert("Please enter an URL")
-    return
+    showAlert("Please enter an URL");
+    return;
   }
+  url = sanitize(url); // sanitize the url to prevent log forging
   $.ajax({
     url: '/test-website',
     method: 'POST',
@@ -34,7 +35,28 @@ function submitRequest() {
     }),
     success: updateOutput,
     error: handleError
-  })
+  });
+}
+
+function showAlert(message) {
+  // Implement your custom alert logic here
+  alert(message);
+}
+
+}
+
+function showAlert(message) {
+  // Implement your custom alert logic here
+  alert(message);
+}
+
+}
+
+function showAlert(message) {
+  // Implement your custom alert logic here
+  alert(message);
+}
+
 }
 
 var form = document.querySelectorAll('form')[0]
