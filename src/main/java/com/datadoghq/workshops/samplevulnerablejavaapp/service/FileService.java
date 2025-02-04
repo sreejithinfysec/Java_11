@@ -10,22 +10,18 @@ import java.io.*;
 public class FileService {
     final static String ALLOWED_PREFIX = "/tmp/files/";
 
-    public String readFile(String path) throws FileForbiddenFileException, FileReadException {
-        if(!path.startsWith(ALLOWED_PREFIX)) {
-            throw new FileForbiddenFileException("You are not allowed to read " + path);
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            return sb.toString();
-        } catch (IOException e) {
-            throw new FileReadException(e.getMessage());
-        }
+public String readFile(String path) throws FileForbiddenFileException, FileReadException {
+    if(!path.startsWith(ALLOWED_PREFIX)) {
+      throw new FileForbiddenFileException("You are not allowed to read " + path);
     }
-}
+    try {
+      Path filePath = Paths.get(path);
+      byte[] bytes = Files.readAllBytes(filePath);
+      return new String(bytes);
+    } catch (IOException e) {
+      throw new FileReadException(e.getMessage());
+    }
+  }
+
+
+
