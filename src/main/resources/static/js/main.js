@@ -23,15 +23,18 @@ function submitRequest() {
     alert("Please enter a domain name");
     return;
   }
-  // Sanitize the input before using it
-  domainName = sanitize(domainName);
   $.ajax({
     url: '/test-domain',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
-      'domainName': domainName
+      'domainName': sanitize(domainName)
     }),
+    success: updateOutput,
+    error: handleError
+  });
+}
+
     success: updateOutput,
     error: handleError
   });
