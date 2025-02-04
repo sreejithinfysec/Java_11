@@ -32,22 +32,20 @@ public class MainController {
   private FileService fileService;
 
 @RequestMapping(method=RequestMethod.POST, value="/test-domain", consumes="application/json")
-  public ResponseEntity<String> testDomain(@RequestBody DomainTestRequest request) {
-    log.info("Testing domain " + request.domainName);
+public ResponseEntity<String> testDomain(@RequestBody DomainTestRequest request) {
+    log.info("Testing domain " + request.getDomainName());
     try {
-      // Use PreparedStatement or JdbcTemplate to avoid SQL injection
-      String sql = "SELECT * FROM domains WHERE name = ?";
-      jdbcTemplate.queryForObject(sql, new Object[]{request.domainName}, Domain.class);
-      
-      String result = domainTestService.testDomain(request.domainName);
-      return new ResponseEntity<>(result, HttpStatus.OK);
+        String result = domainTestService.testDomain(request.getDomainName());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     } catch(InvalidDomainException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (UnableToTestDomainException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     } catch(Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
+
   }
 
   }
