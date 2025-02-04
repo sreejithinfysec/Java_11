@@ -18,21 +18,39 @@ function handleError(error) {
 }
 
 function submitRequest() {
-  var domainName = document.getElementById('domain').value
+  var domainName = document.getElementById('domain').value;
   if (!domainName) {
-    alert("Please enter a domain name")
-    return
+    // Use modal dialogs, toast notifications, or custom JavaScript alerts
+    // that offer enhanced user experience and design consistency.
+    showCustomAlert("Please enter a domain name");
+    return;
   }
   $.ajax({
     url: '/test-domain',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
-      'domainName': domainName
+      'domainName': DOMPurify.sanitize(domainName) // Sanitize input to prevent XSS attacks
     }),
     success: updateOutput,
     error: handleError
-  })
+  });
+}
+
+function showCustomAlert(message) {
+  // Implement custom alert logic here
+  // This could be a modal dialog, toast notification, or custom JavaScript alert
+  var modal = document.getElementById('customModal');
+  var modalMessage = document.getElementById('modalMessage');
+  modalMessage.innerText = message;
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  var modal = document.getElementById('customModal');
+  modal.style.display = 'none';
+}
+
 }
 
 var form = document.querySelectorAll('form')[0]
