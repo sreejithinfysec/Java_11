@@ -23,5 +23,3 @@ public String readFile(String path) throws FileForbiddenFileException, FileReadE
     }
   }
 
-    }
-}
