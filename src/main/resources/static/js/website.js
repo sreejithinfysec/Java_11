@@ -59,5 +59,12 @@ function showAlert(message) {
 
 }
 
+function showAlert(message) {
+  // Implement your custom alert logic here
+  alert(message);
+}
+
+}
+
 var form = document.querySelectorAll('form')[0]
 form.addEventListener('submit', function(evt) { evt.preventDefault(); submitRequest(); })
