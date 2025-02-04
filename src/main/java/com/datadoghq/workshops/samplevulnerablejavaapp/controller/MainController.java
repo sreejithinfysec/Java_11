@@ -85,6 +85,20 @@ public ResponseEntity<String> viewFile(@RequestBody ViewFileRequest request) {
     }
 }
 
+    // Input validation to prevent path traversal
+    if (request.path.contains("..") || request.path.contains("/")) {
+        return new ResponseEntity<>("Invalid file path", HttpStatus.FORBIDDEN);
+    }
+    try {
+        String result = fileService.readFile(request.path);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    } catch (FileForbiddenFileException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    } catch (FileReadException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+}
+
   }
 
   }
